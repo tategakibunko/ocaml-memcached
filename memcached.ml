@@ -225,7 +225,9 @@ end) = struct
     (* Finalizer for the server structures. Shuts down the connection when the
      * structure is being collected by the GC. *)
 
-    let connection_finalizer connection = shutdown_connection connection.input
+    let connection_finalizer connection =
+      shutdown_connection connection.input;
+      Unix.close (Unix.descr_of_in_channel connection.input)
 
     (* External interface *)
 
